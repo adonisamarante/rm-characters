@@ -17,7 +17,7 @@ export const TitleWrapper = styled.div`
   align-items: center;
 
   span {
-    color: white;
+    color: ${({ theme }) => theme['gray-300']};
     font-size: 3rem;
     font-weight: 700;
     filter: drop-shadow(0 0 7px ${({ theme }) => theme['blue-700']});

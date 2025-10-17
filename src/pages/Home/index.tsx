@@ -23,11 +23,11 @@ const defaultInfo: ICharactersListInfo = {
 }
 
 export function Home() {
+  const navigate = useNavigate()
   const [page, setPage] = useState(1)
   const { loading, error, data } = useQuery<IGetCharactersData>(getCharacters, {
     variables: { page },
   })
-  const navigate = useNavigate()
 
   const characters: ICharacter[] = data?.characters?.results || []
   const info: ICharactersListInfo = data?.characters?.info || defaultInfo

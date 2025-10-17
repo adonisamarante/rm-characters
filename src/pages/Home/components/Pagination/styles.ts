@@ -16,9 +16,7 @@ export const PaginationButton = styled.button`
   border-radius: 8px;
   border: none;
 
-  transition:
-    background 0.2s,
-    box-shadow 0.2s;
+  transition: box-shadow 0.2s;
 
   &:hover:not(:disabled) {
     cursor: pointer;
