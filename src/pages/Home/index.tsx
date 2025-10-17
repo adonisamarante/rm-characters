@@ -16,6 +16,7 @@ import type {
   ICharactersListInfo,
 } from '../../infra/interfaces/character'
 import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 
 const defaultInfo: ICharactersListInfo = {
   count: 0,
@@ -29,12 +30,13 @@ export function Home() {
   const { loading, error, data } = useQuery<IGetCharactersData>(getCharacters, {
     variables: { page },
   })
+  const navigate = useNavigate()
 
   const characters: ICharacter[] = data?.characters?.results || []
   const info: ICharactersListInfo = data?.characters?.info || defaultInfo
 
-  function handleClickCharacter(character: ICharacter) {
-    console.log(character.name)
+  function handleClickCharacter(characterId: string) {
+    navigate(`/info/${characterId}`)
   }
 
   return (
@@ -52,7 +54,7 @@ export function Home() {
               <CharacterCard
                 key={character.id}
                 character={character}
-                onClick={() => handleClickCharacter(character)}
+                onClick={() => handleClickCharacter(character.id)}
               />
             ))}
         </CharactersList>
@@ -61,11 +63,6 @@ export function Home() {
             onClick={() => setPage(1)}
             title="First page"
             disabled={page === 1}
-            style={{
-              color: 'white',
-              border: 'none',
-              background: 'transparent',
-            }}
           >
             {'<<'}
           </PaginationButton>
@@ -73,11 +70,6 @@ export function Home() {
             onClick={() => setPage(page - 1)}
             title="Previous page"
             disabled={!info?.prev}
-            style={{
-              color: 'white',
-              border: 'none',
-              background: 'transparent',
-            }}
           >
             {'<'}
           </PaginationButton>
@@ -88,11 +80,6 @@ export function Home() {
             onClick={() => setPage(page + 1)}
             title="Next page"
             disabled={!info?.next}
-            style={{
-              color: 'white',
-              border: 'none',
-              background: 'transparent',
-            }}
           >
             {'>'}
           </PaginationButton>
@@ -100,11 +87,6 @@ export function Home() {
             onClick={() => setPage(info?.pages ?? page)}
             title="Last page"
             disabled={page === info?.pages}
-            style={{
-              color: 'white',
-              border: 'none',
-              background: 'transparent',
-            }}
           >
             {'>>'}
           </PaginationButton>
