@@ -7,7 +7,7 @@ export function Router() {
     <Routes>
       <Route path="/" element={<DefaultLayout />}>
         <Route path="/" element={<Home />} />
-        <Route path="/info/:id" element={<CharacterInfo />} />
+        <Route path="/info/:characterId" element={<CharacterInfo />} />
       </Route>
     </Routes>
   )
