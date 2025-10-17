@@ -1,22 +1,19 @@
-import CharacterCard from './components/CharacterCard'
-import {
-  CharactersList,
-  CharactersListContainer,
-  Container,
-  PaginationButton,
-  PaginationContainer,
-  PaginationInfo,
-  TitleWrapper,
-} from './styles'
+import { useState } from 'react'
 import { useQuery } from '@apollo/client/react'
+import { useNavigate } from 'react-router-dom'
 import { getCharacters } from '../../graphql/queries'
+import { CharacterCard, Pagination } from './components'
 import type {
   ICharacter,
   IGetCharactersData,
   ICharactersListInfo,
 } from '../../infra/interfaces/character'
-import { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import {
+  CharactersList,
+  CharactersListWrapper,
+  Container,
+  TitleWrapper,
+} from './styles'
 
 const defaultInfo: ICharactersListInfo = {
   count: 0,
@@ -39,12 +36,17 @@ export function Home() {
     navigate(`/info/${characterId}`)
   }
 
+  function handleChangePage(newPage: number) {
+    setPage(newPage)
+  }
+
   return (
     <Container>
       <TitleWrapper>
         <span>Meet the Characters</span>{' '}
       </TitleWrapper>
-      <CharactersListContainer>
+
+      <CharactersListWrapper>
         <CharactersList>
           {loading && <p>Loading...</p>}
           {error && <p>Error: {error.message}</p>}
@@ -58,40 +60,13 @@ export function Home() {
               />
             ))}
         </CharactersList>
-        <PaginationContainer>
-          <PaginationButton
-            onClick={() => setPage(1)}
-            title="First page"
-            disabled={page === 1}
-          >
-            {'<<'}
-          </PaginationButton>
-          <PaginationButton
-            onClick={() => setPage(page - 1)}
-            title="Previous page"
-            disabled={!info?.prev}
-          >
-            {'<'}
-          </PaginationButton>
-          <PaginationInfo>
-            {page} of {info?.pages ?? '...'}
-          </PaginationInfo>
-          <PaginationButton
-            onClick={() => setPage(page + 1)}
-            title="Next page"
-            disabled={!info?.next}
-          >
-            {'>'}
-          </PaginationButton>
-          <PaginationButton
-            onClick={() => setPage(info?.pages ?? page)}
-            title="Last page"
-            disabled={page === info?.pages}
-          >
-            {'>>'}
-          </PaginationButton>
-        </PaginationContainer>
-      </CharactersListContainer>
+
+        <Pagination
+          page={page}
+          info={info}
+          handleChangePage={handleChangePage}
+        />
+      </CharactersListWrapper>
     </Container>
   )
 }

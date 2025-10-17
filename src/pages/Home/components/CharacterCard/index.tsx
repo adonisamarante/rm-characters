@@ -6,10 +6,7 @@ interface CharacterCardProps extends HTMLAttributes<HTMLDivElement> {
   character: ICharacter
 }
 
-export default function CharacterCard({
-  character,
-  ...rest
-}: CharacterCardProps) {
+export function CharacterCard({ character, ...rest }: CharacterCardProps) {
   return (
     <CardContainer {...rest}>
       <img src={character.image} alt="image example" />
