@@ -5,14 +5,17 @@ import { defaultTheme } from './styles/themes/default'
 import { GlobalStyle } from './styles/global'
 import { ApolloProvider } from '@apollo/client/react'
 import { client } from './lib/apolloClient'
+import { FavoritesProvider } from './contexts/FavoritesContext'
 
 export default function App() {
   return (
     <ApolloProvider client={client}>
       <ThemeProvider theme={defaultTheme}>
-        <BrowserRouter>
-          <Router />
-        </BrowserRouter>
+        <FavoritesProvider>
+          <BrowserRouter>
+            <Router />
+          </BrowserRouter>
+        </FavoritesProvider>
 
         <GlobalStyle />
       </ThemeProvider>

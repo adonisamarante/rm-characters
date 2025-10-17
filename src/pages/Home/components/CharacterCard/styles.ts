@@ -1,3 +1,4 @@
+import { Heart } from 'phosphor-react'
 import styled from 'styled-components'
 
 export const CardContainer = styled.div`
@@ -59,5 +60,24 @@ export const CharacterDescription = styled.div`
     -webkit-box-orient: vertical;
 
     overflow: hidden;
+  }
+`
+
+export const FavoriteButton = styled(Heart).attrs<{ isFavorite: boolean }>(
+  (props) => ({
+    size: 26,
+    weight: props.isFavorite ? 'fill' : 'light',
+    color: props.theme['gray-300'],
+  }),
+)`
+  position: absolute;
+  top: 1rem;
+  left: 1rem;
+
+  transition: all 0.2s;
+
+  &:hover {
+    cursor: pointer;
+    transform: scale(1.1);
   }
 `
