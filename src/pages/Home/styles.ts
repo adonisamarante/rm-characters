@@ -49,6 +49,18 @@ export const CharactersList = styled.div`
   grid-row-gap: 2rem;
   grid-column-gap: 1.5rem;
   justify-items: center;
+
+  @media screen and (max-width: ${({ theme }) => theme.breakpoints.laptop}) {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  @media screen and (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  @media screen and (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
+    grid-template-columns: 1fr;
+  }
 `
 
 export const PaginationContainer = styled.div`

@@ -3,7 +3,7 @@ import styled from 'styled-components'
 export const CardContainer = styled.div`
   height: 19.375rem;
   width: 16rem;
-  background-color: ${({ theme }) => theme['gray-700']};
+  background-color: ${({ theme }) => theme['gray-800']};
   box-shadow: 0 0 7px ${({ theme }) => theme['blue-700']};
 
   position: relative;
