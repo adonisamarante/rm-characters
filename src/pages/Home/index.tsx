@@ -3,6 +3,9 @@ import {
   CharactersList,
   CharactersListContainer,
   Container,
+  PaginationButton,
+  PaginationContainer,
+  PaginationInfo,
   TitleWrapper,
 } from './styles'
 import { useQuery } from '@apollo/client/react'
@@ -10,14 +13,25 @@ import { getCharacters } from '../../graphql/queries'
 import type {
   ICharacter,
   IGetCharactersData,
+  ICharactersListInfo,
 } from '../../infra/interfaces/character'
+import { useState } from 'react'
+
+const defaultInfo: ICharactersListInfo = {
+  count: 0,
+  pages: 0,
+  next: 0,
+  prev: 0,
+}
 
 export function Home() {
+  const [page, setPage] = useState(1)
   const { loading, error, data } = useQuery<IGetCharactersData>(getCharacters, {
-    variables: { page: 1 },
+    variables: { page },
   })
 
   const characters: ICharacter[] = data?.characters?.results || []
+  const info: ICharactersListInfo = data?.characters?.info || defaultInfo
 
   function handleClickCharacter(character: ICharacter) {
     console.log(character.name)
@@ -42,6 +56,59 @@ export function Home() {
               />
             ))}
         </CharactersList>
+        <PaginationContainer>
+          <PaginationButton
+            onClick={() => setPage(1)}
+            title="First page"
+            disabled={page === 1}
+            style={{
+              color: 'white',
+              border: 'none',
+              background: 'transparent',
+            }}
+          >
+            {'<<'}
+          </PaginationButton>
+          <PaginationButton
+            onClick={() => setPage(page - 1)}
+            title="Previous page"
+            disabled={!info?.prev}
+            style={{
+              color: 'white',
+              border: 'none',
+              background: 'transparent',
+            }}
+          >
+            {'<'}
+          </PaginationButton>
+          <PaginationInfo>
+            {page} of {info?.pages ?? '...'}
+          </PaginationInfo>
+          <PaginationButton
+            onClick={() => setPage(page + 1)}
+            title="Next page"
+            disabled={!info?.next}
+            style={{
+              color: 'white',
+              border: 'none',
+              background: 'transparent',
+            }}
+          >
+            {'>'}
+          </PaginationButton>
+          <PaginationButton
+            onClick={() => setPage(info?.pages ?? page)}
+            title="Last page"
+            disabled={page === info?.pages}
+            style={{
+              color: 'white',
+              border: 'none',
+              background: 'transparent',
+            }}
+          >
+            {'>>'}
+          </PaginationButton>
+        </PaginationContainer>
       </CharactersListContainer>
     </Container>
   )
