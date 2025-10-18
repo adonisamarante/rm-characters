@@ -1,6 +1,8 @@
 import styled from 'styled-components'
 
 export const Container = styled.div`
+  min-height: calc(100vh - 5rem);
+
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -10,7 +12,7 @@ export const Container = styled.div`
 
 export const TitleWrapper = styled.div`
   width: 100%;
-  height: 12rem;
+  height: 10rem;
 
   display: flex;
   justify-content: center;

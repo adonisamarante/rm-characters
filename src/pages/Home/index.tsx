@@ -1,9 +1,10 @@
 import { useState } from 'react'
-import { useQuery } from '@apollo/client/react'
 import { useNavigate } from 'react-router-dom'
-import { getCharacters } from '../../graphql/queries'
-import { CharacterCard, Pagination } from './components'
+import { useLazyQuery, useQuery } from '@apollo/client/react'
+import { getCharacters, getCharactersByIds } from '../../graphql/queries'
+import { useFavorites } from '../../contexts/FavoritesContext'
 import { defaultListInfo } from '../../utils/defaultValues'
+import { CharacterCard, Pagination, SearchAndFilters } from './components'
 import type {
   ICharacter,
   IGetCharactersData,
@@ -19,12 +20,40 @@ import {
 export function Home() {
   const navigate = useNavigate()
   const [page, setPage] = useState(1)
-  const { loading, error, data } = useQuery<IGetCharactersData>(getCharacters, {
+  const [showFavoritesOnly, setShowFavoritesOnly] = useState(false)
+  const { favoriteIds } = useFavorites()
+
+  const {
+    loading: charactersLoading,
+    error: charactersError,
+    data: charactersData,
+  } = useQuery<IGetCharactersData>(getCharacters, {
     variables: { page },
+    skip: showFavoritesOnly,
   })
 
-  const characters: ICharacter[] = data?.characters?.results || []
-  const info: ICharactersListInfo = data?.characters?.info || defaultListInfo
+  const [
+    fetchFavorites,
+    { loading: favoritesLoading, error: favoritesError, data: favoritesData },
+  ] = useLazyQuery<{ charactersByIds: ICharacter[] }>(getCharactersByIds)
+
+  const loading = showFavoritesOnly ? favoritesLoading : charactersLoading
+  const error = showFavoritesOnly ? favoritesError : charactersError
+
+  const apiCharacters: ICharacter[] = charactersData?.characters?.results || []
+  const favoriteCharacters: ICharacter[] =
+    favoriteIds.length === 0 ? [] : favoritesData?.charactersByIds || []
+
+  const info: ICharactersListInfo =
+    charactersData?.characters?.info || defaultListInfo
+
+  const displayCharacters = showFavoritesOnly
+    ? favoriteCharacters
+    : apiCharacters
+
+  function onToggleFavorites(newValue: boolean) {
+    setShowFavoritesOnly(newValue)
+  }
 
   function handleClickCharacter(characterId: string) {
     navigate(`/info/${characterId}`)
@@ -37,16 +66,27 @@ export function Home() {
   return (
     <Container>
       <TitleWrapper>
-        <span>Meet the Characters</span>{' '}
+        <span>Meet the Characters</span>
       </TitleWrapper>
+
+      <SearchAndFilters
+        favoriteIds={favoriteIds}
+        fetchFavorites={fetchFavorites}
+        handleChangePage={handleChangePage}
+        onToggleFavorites={onToggleFavorites}
+        showFavoritesOnly={showFavoritesOnly}
+      />
 
       <CharactersListWrapper>
         <CharactersList>
-          {loading && <p>Loading...</p>}
           {error && <p>Error: {error.message}</p>}
-          {!loading &&
-            characters.length &&
-            characters.map((character) => (
+
+          {showFavoritesOnly && favoriteIds.length === 0 && !loading && (
+            <p>You have no favorite characters yet.</p>
+          )}
+
+          {displayCharacters.length > 0 &&
+            displayCharacters.map((character) => (
               <CharacterCard
                 key={character.id}
                 character={character}
@@ -55,11 +95,13 @@ export function Home() {
             ))}
         </CharactersList>
 
-        <Pagination
-          page={page}
-          info={info}
-          handleChangePage={handleChangePage}
-        />
+        {!showFavoritesOnly && (
+          <Pagination
+            page={page}
+            info={info}
+            handleChangePage={handleChangePage}
+          />
+        )}
       </CharactersListWrapper>
     </Container>
   )
