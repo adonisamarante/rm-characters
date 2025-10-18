@@ -1,5 +1,5 @@
 import { CardContainer, CharacterDescription, FavoriteButton } from './styles'
-import type { ICharacter } from '../../../../infra/interfaces/character'
+import type { ICharacter } from '../../../../types/character'
 import type { HTMLAttributes } from 'react'
 import { useFavorites } from '../../../../contexts/FavoritesContext'
 

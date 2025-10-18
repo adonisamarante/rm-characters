@@ -1,8 +1,5 @@
 import { useNavigate, useParams } from 'react-router-dom'
-import type {
-  ICharacter,
-  IGetCharacterData,
-} from '../../infra/interfaces/character'
+import type { ICharacter, IGetCharacterData } from '../../types/character'
 import {
   BackButton,
   Card,

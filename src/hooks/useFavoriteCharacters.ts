@@ -1,5 +1,5 @@
 import { useFavorites } from '../contexts/FavoritesContext'
-import type { ICharacter } from '../infra/interfaces/character'
+import type { ICharacter } from '../types/character'
 
 export function useFavoriteCharacters(allCharacters: ICharacter[]) {
   const { favoriteIds } = useFavorites()

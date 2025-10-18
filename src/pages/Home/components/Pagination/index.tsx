@@ -1,4 +1,4 @@
-import type { ICharactersListInfo } from '../../../../infra/interfaces/character'
+import type { ICharactersListInfo } from '../../../../types/character'
 import { PaginationButton, PaginationContainer, PaginationInfo } from './styles'
 
 interface PaginationProps {

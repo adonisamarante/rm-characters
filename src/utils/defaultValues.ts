@@ -1,4 +1,4 @@
-import type { ICharactersListInfo } from '../infra/interfaces/character'
+import type { ICharactersListInfo } from '../types/character'
 
 export const defaultListInfo: ICharactersListInfo = {
   count: 0,
