@@ -1,10 +1,20 @@
-import { Heart } from 'phosphor-react'
-import { SearchBarWrapper, SearchInputWrapper, ToggleButton } from './styles'
+import { useState } from 'react'
+import { Heart, MagnifyingGlass } from 'phosphor-react'
+import {
+  SearchBarWrapper,
+  SearchButton,
+  SearchInput,
+  SearchInputWrapper,
+  ToggleButton,
+} from './styles'
 
 interface SearchAndFiltersProps {
   favoriteIds: string[]
   showFavoritesOnly: boolean
+  nameToSearch: string
   handleChangePage: (newPage: number) => void
+  onSearch: (name: string) => void
+  onClearSearch: () => void
   onToggleFavorites: (newValue: boolean) => void
   fetchFavorites: (options: { variables: { ids: string[] } }) => void
 }
@@ -12,10 +22,15 @@ interface SearchAndFiltersProps {
 export function SearchAndFilters({
   favoriteIds,
   showFavoritesOnly,
+  nameToSearch,
   handleChangePage,
+  onSearch,
+  onClearSearch,
   onToggleFavorites,
   fetchFavorites,
 }: SearchAndFiltersProps) {
+  const [searchInput, setSearchInput] = useState('')
+
   function handleToggleFavorites() {
     const newShowFavorites = !showFavoritesOnly
     onToggleFavorites(newShowFavorites)
@@ -28,16 +43,57 @@ export function SearchAndFilters({
     }
   }
 
+  function handleSearch() {
+    const name = searchInput.trim()
+    if (name) {
+      onSearch(name)
+
+      if (showFavoritesOnly) {
+        onToggleFavorites(false)
+      }
+    } else {
+      onClearSearch()
+    }
+  }
+
+  function handleKeyPress(e: React.KeyboardEvent) {
+    if (e.key === 'Enter') {
+      handleSearch()
+    }
+  }
+
+  function handleClearSearch() {
+    onClearSearch()
+    setSearchInput('')
+    handleChangePage(1)
+  }
+
   return (
     <SearchBarWrapper>
-      <SearchInputWrapper>
-        <input type="text" />
-      </SearchInputWrapper>
-
       <ToggleButton onClick={handleToggleFavorites}>
-        <Heart size={20} weight={showFavoritesOnly ? 'fill' : 'regular'} />
         {showFavoritesOnly ? 'Show All' : 'Show Favorites'}
+        <Heart size={20} weight={showFavoritesOnly ? 'fill' : 'regular'} />
       </ToggleButton>
+
+      <SearchInputWrapper>
+        <SearchInput
+          type="text"
+          placeholder="Search by name..."
+          value={searchInput}
+          onChange={(e) => setSearchInput(e.target.value)}
+          onKeyDown={handleKeyPress}
+          disabled={showFavoritesOnly}
+        />
+        <SearchButton
+          onClick={handleSearch}
+          disabled={showFavoritesOnly || !searchInput.trim()}
+        >
+          <MagnifyingGlass size={20} />
+        </SearchButton>
+        {nameToSearch && (
+          <SearchButton onClick={handleClearSearch}>Clear</SearchButton>
+        )}
+      </SearchInputWrapper>
     </SearchBarWrapper>
   )
 }

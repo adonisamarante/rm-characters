@@ -30,3 +30,51 @@ export const ToggleButton = styled.button`
     transition: box-shadow 0.2s ease-in-out;
   }
 `
+
+export const SearchInput = styled.input`
+  background: transparent;
+  padding: 0.5rem 0.5rem;
+  border: none;
+  color: ${({ theme }) => theme['gray-300']};
+  border-bottom: 1px solid ${({ theme }) => theme['gray-700']};
+  transition: border-color 0.2s ease;
+  font-size: 0.875rem;
+
+  &:focus {
+    outline: none;
+    border-bottom-color: ${({ theme }) => theme['green-300']};
+  }
+
+  &::placeholder {
+    color: ${({ theme }) => theme['gray-500']};
+  }
+
+  &:disabled {
+    opacity: 0.5;
+  }
+`
+
+export const SearchButton = styled.button`
+  background: transparent;
+  color: ${({ theme }) => theme['gray-400']};
+  padding: 0.5rem 0.5rem;
+  border: none;
+
+  font-size: 0.8rem;
+  font-weight: 400;
+
+  display: flex;
+  align-items: center;
+  gap: 0.2rem;
+
+  &:hover:not(:disabled) {
+    color: ${({ theme }) => theme['gray-300']};
+    transition: color 0.2s ease;
+    cursor: pointer;
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+`

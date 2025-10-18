@@ -9,7 +9,7 @@ import type {
   ICharacter,
   IGetCharactersData,
   ICharactersListInfo,
-} from '../../infra/interfaces/character'
+} from '../../types/character'
 import {
   CharactersList,
   CharactersListWrapper,
@@ -20,6 +20,7 @@ import {
 export function Home() {
   const navigate = useNavigate()
   const [page, setPage] = useState(1)
+  const [nameToSearch, setNameToSearch] = useState('')
   const [showFavoritesOnly, setShowFavoritesOnly] = useState(false)
   const { favoriteIds } = useFavorites()
 
@@ -28,7 +29,7 @@ export function Home() {
     error: charactersError,
     data: charactersData,
   } = useQuery<IGetCharactersData>(getCharacters, {
-    variables: { page },
+    variables: { page, name: nameToSearch || null },
     skip: showFavoritesOnly,
   })
 
@@ -51,6 +52,16 @@ export function Home() {
     ? favoriteCharacters
     : apiCharacters
 
+  function handleSearch(name: string) {
+    setNameToSearch(name)
+    setPage(1)
+    setShowFavoritesOnly(false)
+  }
+
+  function handleClearSearch() {
+    setNameToSearch('')
+  }
+
   function onToggleFavorites(newValue: boolean) {
     setShowFavoritesOnly(newValue)
   }
@@ -72,19 +83,26 @@ export function Home() {
       <SearchAndFilters
         favoriteIds={favoriteIds}
         fetchFavorites={fetchFavorites}
+        nameToSearch={nameToSearch}
+        onSearch={handleSearch}
+        onClearSearch={handleClearSearch}
         handleChangePage={handleChangePage}
         onToggleFavorites={onToggleFavorites}
         showFavoritesOnly={showFavoritesOnly}
       />
 
+      {error && <p>Error: {error.message}</p>}
+
+      {!loading && !showFavoritesOnly && displayCharacters.length === 0 && (
+        <p>There are no characters to show</p>
+      )}
+
+      {showFavoritesOnly && favoriteIds.length === 0 && !loading && (
+        <p>You have no favorite characters yet.</p>
+      )}
+
       <CharactersListWrapper>
         <CharactersList>
-          {error && <p>Error: {error.message}</p>}
-
-          {showFavoritesOnly && favoriteIds.length === 0 && !loading && (
-            <p>You have no favorite characters yet.</p>
-          )}
-
           {displayCharacters.length > 0 &&
             displayCharacters.map((character) => (
               <CharacterCard
@@ -95,7 +113,7 @@ export function Home() {
             ))}
         </CharactersList>
 
-        {!showFavoritesOnly && (
+        {!showFavoritesOnly && displayCharacters.length > 0 && (
           <Pagination
             page={page}
             info={info}
