@@ -3,6 +3,7 @@ import { useQuery } from '@apollo/client/react'
 import { useNavigate } from 'react-router-dom'
 import { getCharacters } from '../../graphql/queries'
 import { CharacterCard, Pagination } from './components'
+import { defaultListInfo } from '../../utils/defaultValues'
 import type {
   ICharacter,
   IGetCharactersData,
@@ -15,13 +16,6 @@ import {
   TitleWrapper,
 } from './styles'
 
-const defaultInfo: ICharactersListInfo = {
-  count: 0,
-  pages: 0,
-  next: 0,
-  prev: 0,
-}
-
 export function Home() {
   const navigate = useNavigate()
   const [page, setPage] = useState(1)
@@ -30,7 +24,7 @@ export function Home() {
   })
 
   const characters: ICharacter[] = data?.characters?.results || []
-  const info: ICharactersListInfo = data?.characters?.info || defaultInfo
+  const info: ICharactersListInfo = data?.characters?.info || defaultListInfo
 
   function handleClickCharacter(characterId: string) {
     navigate(`/info/${characterId}`)
