@@ -4,17 +4,12 @@ import { useLazyQuery, useQuery } from '@apollo/client/react'
 import { getCharacters, getCharactersByIds } from '../../graphql/queries'
 import { useFavorites } from '../../contexts/FavoritesContext'
 import { defaultListInfo } from '../../utils/defaultValues'
-import {
-  CharacterCard,
-  LoadSkeleton,
-  Pagination,
-  SearchAndFilters,
-} from './components'
 import type {
   ICharacter,
   IGetCharactersData,
   ICharactersListInfo,
 } from '../../types/character'
+import * as C from './components'
 import * as S from './styles'
 
 export function Home() {
@@ -80,7 +75,7 @@ export function Home() {
         <span>Meet the Characters</span>
       </S.TitleWrapper>
 
-      <SearchAndFilters
+      <C.SearchAndFilters
         favoriteIds={favoriteIds}
         fetchFavorites={fetchFavorites}
         nameToSearch={nameToSearch}
@@ -95,11 +90,11 @@ export function Home() {
         <S.CharactersList>
           {loading
             ? Array.from({ length: 20 }).map((_, index) => (
-                <LoadSkeleton key={`skeleton-${index}`} />
+                <C.LoadSkeleton key={`skeleton-${index}`} />
               ))
             : displayCharacters.length > 0 &&
               displayCharacters.map((character) => (
-                <CharacterCard
+                <C.CharacterCard
                   key={character.id}
                   character={character}
                   onClick={() => handleClickCharacter(character.id)}
@@ -108,23 +103,23 @@ export function Home() {
         </S.CharactersList>
 
         {!showFavoritesOnly && displayCharacters.length > 0 && (
-          <Pagination
+          <C.Pagination
             page={page}
             info={info}
             handleChangePage={handleChangePage}
           />
         )}
+
+        {error && <p>Error: {error.message}</p>}
+
+        {!loading && !showFavoritesOnly && displayCharacters.length === 0 && (
+          <p>There are no characters to show.</p>
+        )}
+
+        {showFavoritesOnly && favoriteIds.length === 0 && !loading && (
+          <p>You have no favorite characters yet.</p>
+        )}
       </S.CharactersListWrapper>
-
-      {error && <p>Error: {error.message}</p>}
-
-      {!loading && !showFavoritesOnly && displayCharacters.length === 0 && (
-        <p>There are no characters to show.</p>
-      )}
-
-      {showFavoritesOnly && favoriteIds.length === 0 && !loading && (
-        <p>You have no favorite characters yet.</p>
-      )}
     </S.Container>
   )
 }

@@ -59,6 +59,7 @@ export const TitleWrapper = styled.div`
 export const CharactersListWrapper = styled.div`
   flex: 1;
   flex-direction: column;
+  align-items: center;
   padding-bottom: 2rem;
 `
 
