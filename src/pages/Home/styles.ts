@@ -1,13 +1,31 @@
 import styled from 'styled-components'
 
 export const Container = styled.div`
+  position: relative;
   min-height: calc(100vh - 5rem);
+  margin-top: 5rem;
 
   display: flex;
   flex-direction: column;
   align-items: center;
 
-  margin-top: 5rem;
+  &::before {
+    content: '';
+    position: absolute;
+    top: 21.875rem;
+    left: 50%;
+    width: 62.5rem;
+    height: 62.5rem;
+    transform: translate(-50%, -50%);
+    background: radial-gradient(
+      circle,
+      ${({ theme }) => theme['green-700']}40 0%,
+      ${({ theme }) => theme['green-500']}25 10%,
+      ${({ theme }) => theme['green-300']}18 40%,
+      transparent 70%
+    );
+    z-index: -1;
+  }
 `
 
 export const TitleWrapper = styled.div`
