@@ -1,4 +1,9 @@
-import { CardContainer, CharacterDescription, FavoriteButton } from './styles'
+import {
+  CardContainer,
+  CharacterDescription,
+  FavoriteButton,
+  InfoList,
+} from './styles'
 import type { ICharacter } from '../../../../types/character'
 import type { HTMLAttributes } from 'react'
 import { useFavorites } from '../../../../contexts/FavoritesContext'
@@ -27,16 +32,14 @@ export function CharacterCard({ character, ...rest }: CharacterCardProps) {
 
       <CharacterDescription>
         <span>{character.name}</span>
-        <span>
-          This is the description test sjoia aisfjoid sidjfos sidfjsoidfjios isd
-          isdj isidfojsdof sidjfosd sidjofsijfos ijofsjid his is the description
-          test sjoia aisfjoid sidjfos sidfjsoidfjios isd isdj isidfojsdof
-          sidjfosd sidjofsijfos ijofsjid his is the description test sjoia
-          aisfjoid sidjfos sidfjsoidfjios isd isdj isidfojsdof sidjfosd
-          sidjofsijfos ijofsjid his is the description test sjoia aisfjoid
-          sidjfos sidfjsoidfjios isd isdj isidfojsdof sidjfosd sidjofsijfos
-          ijofsjid
-        </span>
+        <InfoList>
+          <li>
+            <span>Gender</span> {character?.gender}
+          </li>
+          <li>
+            <span>Species</span> {character?.species}
+          </li>
+        </InfoList>
       </CharacterDescription>
     </CardContainer>
   )

@@ -37,29 +37,16 @@ export const CardContainer = styled.div`
 
 export const CharacterDescription = styled.div`
   width: 13rem;
-  margin-top: 8.5rem;
+  margin-top: 7.5rem;
   text-align: center;
   flex-direction: column;
   gap: 1rem;
 
-  :first-child {
-    font-family: 'Baloo 2', sans-serif;
+  > :first-child {
     color: ${({ theme }) => theme['blue-700']};
-    font-size: 1.25rem;
+    font-size: 1.4rem;
     line-height: 130%;
     font-weight: 700;
-  }
-
-  :last-child {
-    color: ${({ theme }) => theme['gray-300']};
-    font-size: 0.875rem;
-    line-height: 130%;
-
-    display: -webkit-box;
-    -webkit-line-clamp: 5;
-    -webkit-box-orient: vertical;
-
-    overflow: hidden;
   }
 `
 
@@ -79,5 +66,22 @@ export const FavoriteButton = styled(Heart).attrs<{ isFavorite: boolean }>(
   &:hover {
     cursor: pointer;
     transform: scale(1.1);
+  }
+`
+
+export const InfoList = styled.ul`
+  color: ${({ theme }) => theme['gray-100']};
+  font-size: 1.5rem;
+
+  li {
+    display: flex;
+    flex-direction: column;
+
+    text-align: center;
+    margin-bottom: 0.7rem;
+
+    span {
+      color: ${({ theme }) => theme['green-300']};
+    }
   }
 `
