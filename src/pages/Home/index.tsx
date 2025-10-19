@@ -4,18 +4,18 @@ import { useLazyQuery, useQuery } from '@apollo/client/react'
 import { getCharacters, getCharactersByIds } from '../../graphql/queries'
 import { useFavorites } from '../../contexts/FavoritesContext'
 import { defaultListInfo } from '../../utils/defaultValues'
-import { CharacterCard, Pagination, SearchAndFilters } from './components'
+import {
+  CharacterCard,
+  LoadSkeleton,
+  Pagination,
+  SearchAndFilters,
+} from './components'
 import type {
   ICharacter,
   IGetCharactersData,
   ICharactersListInfo,
 } from '../../types/character'
-import {
-  CharactersList,
-  CharactersListWrapper,
-  Container,
-  TitleWrapper,
-} from './styles'
+import * as S from './styles'
 
 export function Home() {
   const navigate = useNavigate()
@@ -75,10 +75,10 @@ export function Home() {
   }
 
   return (
-    <Container>
-      <TitleWrapper>
+    <S.Container>
+      <S.TitleWrapper>
         <span>Meet the Characters</span>
-      </TitleWrapper>
+      </S.TitleWrapper>
 
       <SearchAndFilters
         favoriteIds={favoriteIds}
@@ -91,27 +91,21 @@ export function Home() {
         showFavoritesOnly={showFavoritesOnly}
       />
 
-      {error && <p>Error: {error.message}</p>}
-
-      {!loading && !showFavoritesOnly && displayCharacters.length === 0 && (
-        <p>There are no characters to show</p>
-      )}
-
-      {showFavoritesOnly && favoriteIds.length === 0 && !loading && (
-        <p>You have no favorite characters yet.</p>
-      )}
-
-      <CharactersListWrapper>
-        <CharactersList>
-          {displayCharacters.length > 0 &&
-            displayCharacters.map((character) => (
-              <CharacterCard
-                key={character.id}
-                character={character}
-                onClick={() => handleClickCharacter(character.id)}
-              />
-            ))}
-        </CharactersList>
+      <S.CharactersListWrapper>
+        <S.CharactersList>
+          {loading
+            ? Array.from({ length: 20 }).map((_, index) => (
+                <LoadSkeleton key={`skeleton-${index}`} />
+              ))
+            : displayCharacters.length > 0 &&
+              displayCharacters.map((character) => (
+                <CharacterCard
+                  key={character.id}
+                  character={character}
+                  onClick={() => handleClickCharacter(character.id)}
+                />
+              ))}
+        </S.CharactersList>
 
         {!showFavoritesOnly && displayCharacters.length > 0 && (
           <Pagination
@@ -120,7 +114,17 @@ export function Home() {
             handleChangePage={handleChangePage}
           />
         )}
-      </CharactersListWrapper>
-    </Container>
+      </S.CharactersListWrapper>
+
+      {error && <p>Error: {error.message}</p>}
+
+      {!loading && !showFavoritesOnly && displayCharacters.length === 0 && (
+        <p>There are no characters to show.</p>
+      )}
+
+      {showFavoritesOnly && favoriteIds.length === 0 && !loading && (
+        <p>You have no favorite characters yet.</p>
+      )}
+    </S.Container>
   )
 }

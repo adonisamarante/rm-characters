@@ -11,6 +11,7 @@ import {
 } from './styles'
 import { useQuery } from '@apollo/client/react'
 import { getCharacter } from '../../graphql/queries/getCharacter'
+import { LoadSkeleton } from './components/LoadSkeleton'
 
 export function CharacterInfo() {
   const { characterId } = useParams<{ characterId: string }>()
@@ -30,36 +31,44 @@ export function CharacterInfo() {
   }
 
   return (
-    <Container>
-      <Card>
-        <TitleWrapper>
-          <CharacterImage src={character?.image} alt={character?.name} />
-          <Name>{character?.name}</Name>
-        </TitleWrapper>
+    <>
+      {loading ? (
+        <LoadSkeleton />
+      ) : (
+        <Container>
+          <Card>
+            <TitleWrapper>
+              <CharacterImage src={character?.image} alt={character?.name} />
+              <Name>{character?.name}</Name>
+            </TitleWrapper>
 
-        <InfoList>
-          <li>
-            <span>Gender</span> {character?.gender}
-          </li>
-          <li>
-            <span>Type</span> {character?.type || 'unknown'}
-          </li>
-          <li>
-            <span>Species</span> {character?.species}
-          </li>
-          <li>
-            <span>Status</span> {character?.status}
-          </li>
-          <li>
-            <span>Origin</span> {character?.origin?.name}
-          </li>
-          <li>
-            <span>Last Known Location</span> {character?.location?.name}
-          </li>
-        </InfoList>
+            <InfoList>
+              <li>
+                <span>Gender</span> {character?.gender}
+              </li>
+              <li>
+                <span>Type</span> {character?.type || 'unknown'}
+              </li>
+              <li>
+                <span>Species</span> {character?.species}
+              </li>
+              <li>
+                <span>Status</span> {character?.status}
+              </li>
+              <li>
+                <span>Origin</span> {character?.origin?.name}
+              </li>
+              <li>
+                <span>Last Known Location</span> {character?.location?.name}
+              </li>
+            </InfoList>
 
-        <BackButton onClick={handleClickBack}>Back to Characters</BackButton>
-      </Card>
-    </Container>
+            <BackButton onClick={handleClickBack}>
+              Back to Characters
+            </BackButton>
+          </Card>
+        </Container>
+      )}
+    </>
   )
 }
