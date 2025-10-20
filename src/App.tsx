@@ -18,7 +18,7 @@ export default function App() {
           highlightColor={defaultTheme['gray-600']}
         >
           <FavoritesProvider>
-            <BrowserRouter>
+            <BrowserRouter basename="/rm-characters">
               <Router />
             </BrowserRouter>
           </FavoritesProvider>
