@@ -31,8 +31,12 @@ Utiliza o endpoint GraphQL da [API Rick and Morty](https://rickandmortyapi.com/)
 
 Os favoritos são armazenados no React Context e funciona perfeitamente para uma seção de uso.
 
-## 🏗️ Decisões de Arquitetura
+## 🏗️ Escolhas de Arquitetura
 
 - **Gerenciamento de Estado**: React Context - Simples e suficiente para esta aplicação
 - **Busca de Dados**: Apollo Client - Suportado pela API Rick and Morty resultando em fácil implementação
 - **Estilização**: Styled Components - CSS-in-JS que facilita o entendimento e manutenção de componentes
+
+##
+
+Antes de testar localmente, veja o projeto rodando [aqui](https://adonisamarante.github.io/rm-characters/).
