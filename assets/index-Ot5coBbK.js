@@ -223,9 +223,10 @@ this in the docs: http://dev.apollodata.com/core/fragments.html#unique-names`):h
     position: absolute;
     top: -1.25rem;
 
-    border-radius: 50%;
-    border: 3px solid ${({theme:i})=>i["green-500"]};
+    background-color: ${({theme:i})=>i["gray-700"]};
     box-shadow: 0 0 15px ${({theme:i})=>i["green-300"]};
+    border: 3px solid ${({theme:i})=>i["green-500"]};
+    border-radius: 50%;
 
     height: 7.5rem;
     width: 7.5rem;
